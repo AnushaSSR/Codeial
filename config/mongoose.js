@@ -9,7 +9,7 @@ db.on('error', console.error.bind(console, "Error in connecting to MongoDB"));
 
 
 db.once('open', function(){
-    console.log("Conncted to Database :: MongoDB");
+    console.log("Connected to Database :: MongoDB");
 
 });
 

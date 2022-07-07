@@ -1,7 +1,9 @@
 // export user from models
 
+const passport = require('passport');
 const User = require('../models/user');
 // render profile page
+
 
 module.exports.profile = function(req,res){
     return res.render('user_profile', {
@@ -9,21 +11,28 @@ module.exports.profile = function(req,res){
     });
 }
 
+//render signup page
+module.exports.signup= function(req,res){
+
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile');
+    }
+    return res.render('user_sign_up',{
+        title : "Codeial | Sign Up"
+    });
+}
 
 //render signin page
 module.exports.signin = function(req,res){
+    
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile');
+    }
     return res.render('user_sign_in', {
         title:"Codeial | Sign in "
     });
 }
 
-//render signup page
-module.exports.signup= function(req,res){
-
-    return res.render('user_sign_up',{
-        title : "Codeial | Sign Up"
-    });
-}
 
 // get the signup data
 
@@ -57,5 +66,22 @@ module.exports.create= function(req,res){
 // signin and create a session for user
 
 module.exports.createSession= function(req,res){
-    //TODO later
+    console.log("page is loading");
+    return res.redirect('/');
+    
+    // assuming user is alreday signed in
+
 }
+
+module.exports.destroySession= function(req,res,next){
+     // functiongiven to req by passport.js
+
+     req.logout(function(err) {
+        if (err) { return next(err); }
+        res.redirect('/');
+    
+    // assuming user is alreday signed in
+
+     })
+}
+

@@ -12,6 +12,11 @@ router.get('/',home_controller.home);
 
 router.use('/users', require('./user'));
 router.use('/posts',require('./posts'));
+
+
+router.use('/comments',require('./comments'));
+
+
 // router.use('/profile', require('./profile'));
 
 // for any further routes, access from here

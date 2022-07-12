@@ -27,7 +27,8 @@ router.post('/create', user_controller.create);
 // to create a session, create a route
 // use passport as a middleware to authenticate
 router.post('/create-session', passport.authenticate(
-    'local',{failureRedirect: '/users/sign-in'},
+    'local',
+    {failureRedirect: '/users/sign-in'},
 ), user_controller.createSession);
 
 router.get('/sign-out', user_controller.destroySession);
@@ -36,6 +37,6 @@ router.get('/sign-out', user_controller.destroySession);
 
 
 
-router.get('/posts', post_controller.posts);
+// router.get('/posts', post_controller.posts);
 
 module.exports =router;

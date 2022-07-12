@@ -1,8 +1,7 @@
 // to get the expresss
-
 const express = require('express');
-// to get the cookie parser
 
+// to get the cookie parser
 const cookieParser = require('cookie-parser');
 const app = express();
 
@@ -14,8 +13,8 @@ const expressLayouts = require('express-ejs-layouts');
 const db= require('./config/mongoose');
 // user for session cookie
 const session = require('express-session');
-// for authentication
 
+// for authentication
 //need to require both, for this to work
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
@@ -32,6 +31,7 @@ app.use(sassMiddleware({
     outputStyle: 'extended',
     prefix: '/css'
 }))
+
 // get the url
 app.use(express.urlencoded());
 

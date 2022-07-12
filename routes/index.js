@@ -11,7 +11,7 @@ const home_controller = require('../controllers/home_controller')
 router.get('/',home_controller.home);
 
 router.use('/users', require('./user'));
-
+router.use('/posts',require('./posts'));
 // router.use('/profile', require('./profile'));
 
 // for any further routes, access from here

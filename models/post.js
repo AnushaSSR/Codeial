@@ -11,11 +11,11 @@ const postSchema = new mongoose.Schema({
         ref: "User"
         //timestamp it is refferimg to
     },
-    //include the array of ids of all commnets in post scheman itself
-    comments: {
+    //include the array of ids of all commnets in post schema itself
+    comments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment'
-    }
+    }]
 },{
     timestamps: true
 });

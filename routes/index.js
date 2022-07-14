@@ -12,8 +12,7 @@ router.get('/',home_controller.home);
 
 router.use('/users', require('./user'));
 router.use('/posts',require('./posts'));
-
-
+//commnets router is required
 router.use('/comments',require('./comments'));
 
 

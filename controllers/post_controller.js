@@ -1,12 +1,19 @@
 const Post= require('../models/post');
 
-
 module.exports.create = function(req, res) {
     Post.create({
         content : req.body.content,
         user: req.user._id
     }, function(err, post){
         if(err){console.log("error in creating post"); return}
-        return res. redirect('back');
+        return res.redirect('back');
+    });
+}
+
+
+module.exports.display = function(req, res) {
+    Post.find({user:user_id},function(err,post){
+        if(err) {console.log("error in fetching posts"); return}
+        return res.redirect('back');
     });
 }

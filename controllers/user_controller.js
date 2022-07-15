@@ -3,12 +3,32 @@
 const passport = require('passport');
 const User = require('../models/user');
 // render profile page
-
+ 
 
 module.exports.profile = function(req,res){
-    return res.render('user_profile', {
-        title:"Profile Page"
-    });
+    User.findById(req.params.id, function(err,user){
+        return res.render('user_profile', {
+            title:"User Profile",
+            profile_user: user
+        });
+    //    before rendering the users list 
+    // return res.render('user_profile', {
+        //     title:"User Profile",
+       
+    })
+    
+}
+
+
+// to update the user details
+module.exports.update = function(req,res){
+    if(req.user.id == req.params.id){
+        User.findByIdAndUpdate(req.params.id, req.body, function(err, user){
+            return res.redirect('back');
+        });
+    }else{
+        return res.status(401).send('Unauthorized');
+    }
 }
 
 //render signup page

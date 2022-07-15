@@ -10,7 +10,9 @@ const passport = require('passport');
 const user_controller = require('../controllers/user_controller');
 const post_controller= require('../controllers/post_controller');
 // create a route to profile
-router.get('/profile', passport.checkAuthentication, user_controller.profile);
+router.get('/profile/:id', passport.checkAuthentication, user_controller.profile);
+
+router.post('/update/:id', passport.checkAuthentication, user_controller.update);
 
 //to get the user signup page
 router.get('/sign-up',user_controller.signup);

@@ -1,40 +1,44 @@
 const { populate } = require('../models/post');
-const Post= require('../models/post');
+const Post = require('../models/post');
 const User = require('../models/user');
 // export a function to make it publically availabele
-module.exports.home = function(req,res){
-    // console.log(req.cookies);
-    // // res.cookie('userid',25);
-    // Post.find({}, function(err,posts){
-        
-    //     return res.render('home', {
-    //     title: "Codeial | Home",
-    //     posts: posts
-    //     });
-
-    // });
-
+//declasres fnc contains async statements
+module.exports.home = async function (req, res) {
     //Populate the user of each post
+    //try and catch
+    try{
+        //await for posts
+        let posts = await Post.find({})
+        .populate('user')
+        .populate({
+            path: 'comments',
+            populate: {
+                path: 'user'
+            }
 
-    Post.find({})
-    .populate('user')
-    .populate({
-        path:'comments',
-        populate:{
-            path:'user'
-        }
-
-    })
-    .exec(function(err,posts){
-        User.find({}, function(err,users){
-            return res.render('home', {
-                title: "Codeial | Home",
-                posts: posts,
-                all_users: users
-    
-            });
         });
+
+    //await for users
+    let users = await User.find({});
+
+    return res.render('home', {
+        title: "Codeial | Home",
+        posts: posts,
+        all_users: users
+    });
+
+
+    }catch(err){
+        console.log('Error',err);
+
+    }
     
-    })
+    
 
 }
+
+//using then
+    // Post.find({}).populate('comments').then(function());
+
+    // let posts = Post.find({}).populate('comments').exec();
+    // posts.then()

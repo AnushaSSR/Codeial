@@ -21,6 +21,8 @@ const passportLocal = require('./config/passport-local-strategy');
 
 const MongoStore= require('connect-mongo');
 const sassMiddleware= require('node-sass-middleware');
+const flash= require('connect-flash');
+const customMware= require('./config/middleware');
 
 //to be pre compiled befre server starts
 app.use(sassMiddleware({
@@ -83,7 +85,9 @@ app.use(passport.session());
 
 //set current user's usage
 app.use(passport.setAuthenticatedUser);
-
+//flash after session being used
+app.use(flash());
+app.use(customMware.setFlash);
 app.use('/',require('./routes'));
 
 // make the app listen to the port

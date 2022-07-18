@@ -12,13 +12,17 @@ module.exports.create = async function (req, res) {
                 post: req.body.post,
                 user: req.user._id
             });
+
             post.comments.push(comment);
             post.save();
+            req.flash('success', 'Comments added to the post');
+
             res.redirect('/');
         }
     } catch (err) {
-        console.log('Error', err);
-        return;
+        req.flash('error', err);
+
+        return res.redirect('back');
 
     }
 }
@@ -33,13 +37,16 @@ module.exports.destroy = async function (req, res) {
             comment.remove();
             //$pull featrure of the mongoose with throws out id matching the comments id
             let post = await Post.findByIdAndUpdate(postId, { $pull: { comments: req.params.id } });
+            req.flash('success', 'Comment deleted!');
             return res.redirect('back');
 
         } else {
+            req.flash('success', 'Comment deleted!');
             return res.redirect('back');
         }
     } catch (err) {
-        console.log('Error', err);
-        return;
+
+        req.flash('Error', err);
+        return res.redirect('back');
     }
 }

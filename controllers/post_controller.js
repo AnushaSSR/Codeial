@@ -4,13 +4,27 @@ const Comment = require('../models/comment');
 //not needed just one level of call back
 module.exports.create = async function (req, res) {
     try {
-        await Post.create({
+        //let created when creating the post using AJAX
+        let post= await Post.create({
             content: req.body.content,
             user: req.user._id
         });
+
+        if(req.xhr){
+            return res.status(200).json({
+                data: {
+                    post: post
+                },
+
+                message: "Post created!"
+                
+            })
+        }
+
+        req.flash('success', 'Post published!');
         return res.redirect('back');
     } catch (err) {
-        console.log('Error', err);
+        req.flash('err', err);
         return;
     }
 
@@ -34,15 +48,36 @@ module.exports.destroy = async function (req, res) {
             post.remove();
 
             await Comment.deleteMany({ post: req.params.id });
+
+            if(req.xhr){
+                return res.status(200).json({
+                    data: {
+                        post_id: req.params.id
+                    },
+    
+                    message: "Post deleted"
+                    
+                })
+            }
+    
+
+            req.flash('success', 'Post and comments deleted');
+
+
             return res.redirect('back');
 
         } else {
+            req.flash('error', 'you cant delete the post');
+
+
             return res.redirect('back');
         }
 
     } catch (err) {
+        req.flash('error', err);
+
         console.log('Error', err);
-        return;
+        return res.redirect('back');
 
     }
 

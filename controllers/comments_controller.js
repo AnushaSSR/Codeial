@@ -5,6 +5,7 @@ module.exports.create = async function (req, res) {
     try {
 
         let post = await Post.findById(req.body.post);
+        
         if (post) {
 
             let comment = await Comment.create({
@@ -15,6 +16,20 @@ module.exports.create = async function (req, res) {
 
             post.comments.push(comment);
             post.save();
+
+
+            
+        if(req.xhr){
+            return res.status(200).json({
+                data: {
+                    comment: comment
+                },
+
+                message: "Comment Posted!"
+                
+            })
+        }
+
             req.flash('success', 'Comments added to the post');
 
             res.redirect('/');

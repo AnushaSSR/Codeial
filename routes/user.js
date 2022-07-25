@@ -1,29 +1,26 @@
 // route of users
-
 const express = require('express');
 const router = express.Router();
 //import passport
-
 const passport = require('passport');
 
 
-const user_controller = require('../controllers/user_controller');
-const post_controller= require('../controllers/post_controller');
-// create a route to profile
-router.get('/profile/:id', passport.checkAuthentication, user_controller.profile);
+const usersController = require('../controllers/user_controller');
 
-router.post('/update/:id', passport.checkAuthentication, user_controller.update);
+// create a route to profile
+router.get('/profile/:id', passport.checkAuthentication, usersController.profile);
+router.post('/update/:id', passport.checkAuthentication, usersController.update);
 
 //to get the user signup page
-router.get('/sign-up',user_controller.signup);
+router.get('/sign-up', usersController.signUp);
 
 // // to get the user login page
-router.get('/sign-in',user_controller.signin);
+router.get('/sign-in', usersController.signIn);
 
 
 // route for sign up page
 
-router.post('/create', user_controller.create);
+router.post('/create', usersController.create);
 
 
 // to create a session, create a route
@@ -31,9 +28,9 @@ router.post('/create', user_controller.create);
 router.post('/create-session', passport.authenticate(
     'local',
     {failureRedirect: '/users/sign-in'},
-), user_controller.createSession);
+), usersController.createSession);
 
-router.get('/sign-out', user_controller.destroySession);
+router.get('/sign-out', usersController.destroySession);
 // assignmebt to create a post route
 
 
@@ -41,4 +38,4 @@ router.get('/sign-out', user_controller.destroySession);
 
 // router.get('/posts', post_controller.posts);
 
-module.exports =router;
+module.exports = router;

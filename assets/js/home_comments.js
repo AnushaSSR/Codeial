@@ -11,8 +11,8 @@
                 data: newCommentForm.serialize(),
                 success: function(data){
                     let newcomment= newCommentDom(data.data.comment);
-                    $(`#posts-container>ul`).prepend(newPost);
-                    deletePost($('.delete-post-button', newPost));
+                    $(`.post-comments-list>ul`).prepend(newcomment);
+                    deletePost($('.delete-post-button', newcomment));
                 },error: function(error){
                     console.log(error.responseText);
                 }

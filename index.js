@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const app = express();
 
 //to get the port, default is 80, we will go by 8000
-const port= 8000;
+const port= 3005;
 // to get the library of express ejs layouts
 const expressLayouts = require('express-ejs-layouts');
 // import mongosse

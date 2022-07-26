@@ -46,6 +46,9 @@ app.use(express.static('./assets'));
  // to be required before routes
 app.use(expressLayouts);
 
+
+app.use('/uploads', express.static(__dirname + '/uploads'));
+
 // extract style and script from sub pages to layout
 app.set('layout extractStyles',true)
 app.set('layout extractLayouts',true)
@@ -89,6 +92,7 @@ app.use(passport.setAuthenticatedUser);
 app.use(flash());
 app.use(customMware.setFlash);
 app.use('/',require('./routes'));
+
 
 // make the app listen to the port
 app.listen(port,function(err){

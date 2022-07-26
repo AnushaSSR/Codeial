@@ -15,6 +15,8 @@ router.use('/posts', require('./posts'));
 //comments router is required
 router.use('/comments', require('./comments'));
 
+// to make the router know the api route
+router.use('/api', require('./api'));
 
 // router.use('/profile', require('./profile'));
 

@@ -10,7 +10,7 @@ const usersController = require('../controllers/user_controller');
 // create a route to profile
 router.get('/profile/:id', passport.checkAuthentication, usersController.profile);
 router.post('/update/:id', passport.checkAuthentication, usersController.update);
-
+  
 //to get the user signup page
 router.get('/sign-up', usersController.signUp);
 
@@ -33,7 +33,8 @@ router.post('/create-session', passport.authenticate(
 router.get('/sign-out', usersController.destroySession);
 // assignmebt to create a post route
 
-
+router.get('/auth/google', passport.authenticate('google',{scope: ['profile', 'email']}));
+router.get('/auth/google/callback', passport.authenticate('google', {failureRedirect: '/users/sign-in'}, usersController.createSession));
 
 
 // router.get('/posts', post_controller.posts);

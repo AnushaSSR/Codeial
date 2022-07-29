@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const app = express();
 
 //to get the port, default is 80, we will go by 8000
-const port= 3005;
+const port= 3000;
 // to get the library of express ejs layouts
 const expressLayouts = require('express-ejs-layouts');
 // import mongosse
@@ -18,9 +18,8 @@ const session = require('express-session');
 //need to require both, for this to work
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
-
 const passportJwt = require('./config/passport-jwt-strategy');
-
+const passportGoogle= require('./config/passport-google-outh2-strategy');
 const MongoStore= require('connect-mongo');
 const sassMiddleware= require('node-sass-middleware');
 const flash= require('connect-flash');

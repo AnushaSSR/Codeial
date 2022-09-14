@@ -1,24 +1,33 @@
 //renamingthe files names on refresh and sending them to browser gulp is used
 const gulp = require('gulp');
 // //small libararies by gulp to convert the sass file to css
-// // const sass = require('gulp-sass');
-// const sass = require('gulp-sass')(require('node-sass'));
-//compress into one line
-const cssnano = require('gulp-cssnano');
-//to rename the file with # along side
-const rev = require('gulp-rev');
-// const { manifest } = require('gulp-rev');
 
 //follow below syntax for importing gulp
-const sass = require('gulp-sass')(require('node-sass'));
-//final code for css is this.
+const sass = require('gulp-sass')(require('node-sass'));// const sass = require('gulp-sass')(require('node-sass'));
+
+//compress into one line
+const cssnano = require('gulp-cssnano');
+
+//to rename the file with # along side
+const rev = require('gulp-rev');
+
+//uglify to minfiose the js
+const uglify = require('gulp-uglify-es').default;
+
+// const imagein = require('gulp-imagein');
+
+// const del = require('del');
+//final code for css: create a task for minifying the css
+
 gulp.task('css', (done) => {
     console.log('Minifying CSS');
     gulp.src('../assets/sass/**/*.scss')
         .pipe(sass())
         .pipe(cssnano())
         .pipe(gulp.dest('../assets.css'));
+
     console.log('Minified CSS');
+    
     gulp.src('../assets/**/*.css')
         .pipe(rev())
         .pipe(gulp.dest('../public/assets'))
@@ -31,7 +40,21 @@ gulp.task('css', (done) => {
     done();
 })
 
-// //create a task for minifying the css
+//final code for js : create a task for minifying the js
+gulp.task('js', (done) => {
+    console.log("minifying js....");
+    gulp.src('./assets/js/**/*.js')
+    .pipe(uglify())
+    .pipe(rev())
+    .pipe(gulp.dest('./public/assets'))
+    .pipe(rev.manifest({
+        cwd: 'public',
+        merge: true
+    }))
+    .pipe(gulp.dest('./public/assets'));
+    done()
+});
+
 
 // gulp.task('css', function () {
 //     console.log('Minifying css ....');

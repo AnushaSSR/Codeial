@@ -14,9 +14,11 @@ const rev = require('gulp-rev');
 //uglify to minfiose the js
 const uglify = require('gulp-uglify-es').default;
 
-// const imagein = require('gulp-imagein');
+// // import imagemin  from 'gulp-imagemin';
+// const imagemin = import('gulp-imagemin');
 
 // const del = require('del');
+
 //final code for css: create a task for minifying the css
 
 gulp.task('css', (done) => {
@@ -30,12 +32,12 @@ gulp.task('css', (done) => {
     
     gulp.src('../assets/**/*.css')
         .pipe(rev())
-        .pipe(gulp.dest('../public/assets'))
+        .pipe(gulp.dest('../public/assets/css'))
         .pipe(rev.manifest({
             cwd: 'public',
             merge: true
         })).pipe(
-            gulp.dest('../public/assets')
+            gulp.dest('../public/assets/css')
         );
     done();
 })
@@ -46,6 +48,33 @@ gulp.task('js', (done) => {
     gulp.src('./assets/js/**/*.js')
     .pipe(uglify())
     .pipe(rev())
+    .pipe(gulp.dest('./public/assets/js'))
+    .pipe(rev.manifest({
+        cwd: 'public',
+        merge: true
+    }))
+    .pipe(gulp.dest('./public/assets/js'));
+    done()
+});
+
+
+
+//final code for images : create a task for minifying the images
+gulp.task('images', (done) => {
+    console.log("compressing images....");
+    gulp.src('./assets/js/**/*.+(jpg|png|svg|gif|jpeg)')
+    .pipe(imagemin([
+        imagemin.gifsicle({interlaced: true}),
+        imagemin.mozjpeg({quality: 75, progressive: true}),
+        imagemin.optipng({optimizationLevel: 5}),
+        imagemin.svgo({
+            plugins: [
+                {removeViewBox: true},
+                {cleanupIDs: false}
+            ]
+        })
+    ]))
+    .pipe(rev())
     .pipe(gulp.dest('./public/assets'))
     .pipe(rev.manifest({
         cwd: 'public',
@@ -54,6 +83,19 @@ gulp.task('js', (done) => {
     .pipe(gulp.dest('./public/assets'));
     done()
 });
+
+// gulp.task('clean:assets', fucntion(done){
+//     del.sync('./public/assets');
+//     done();
+
+// });
+
+
+gulp.task('build', gulp.series('css','js'), function(done){
+    console.log("Building assets");
+    done();
+})
+
 
 
 // gulp.task('css', function () {

@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="/css/home.css">
+<link rel="stylesheet" href="/css/chat_box.css">
 <div id="home-container">
     <section id="feed-posts">
             <h4>Posts</h4>
@@ -8,6 +9,7 @@
                 <input type="submit" value="Post">
             </form>
             <% } %>
+
         
             <div id="posts-list-container">
                 <ul>
@@ -29,9 +31,36 @@
                 </p>
             <% } %>
         </section>
+
+        <%- include('_chat_box') -%>
 </div>
 
 <!-- importing this script for creating the comments -->
-<script src="/js/home_post_comments.js" ></script>
+<script src="/js/home_comments.js" ></script>
 <script src="/js/home_posts.js"></script>
 
+<!-- CHANGE :: import the script file for toggle likes, also run it over for the already present posts and comments on the page -->
+
+<script src="js/toggle_likes.js"></script>
+<script>
+    $('.toggle-like-button').each(function(){
+        let self = this;
+        let toggleLike = new ToggleLike(self);
+    });
+</script>
+
+<!-- //cdn for the socket -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.2/socket.io.js"></script>
+<!-- //observer -->
+<script src="/js/chat_engine.js"></script>
+
+<!-- 
+// run the script only if the user exists -->
+<% if(locals.user) {%>
+<script>
+    // to pass the initial values
+    // found in the chat_box.js
+    //womt send i dwe will send the email
+    new ChatEngine('user-chat-box', '<%= locals.user.email%>')
+</script>
+<%} %>

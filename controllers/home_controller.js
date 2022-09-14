@@ -9,6 +9,8 @@ module.exports.home = async function(req, res){
     //try and catch
 
     try{
+                // CHANGE :: populate the likes of each post and comment
+
         // populate the user of each post
         let posts = await Post.find({})
         .sort('-createdAt')
@@ -17,11 +19,13 @@ module.exports.home = async function(req, res){
             path: 'comments',
             populate: {
                 path: 'user'
+            },
+            //populating likes for the commnets
+            populate: {
+                path: 'likes'
             }
-
-        });
-
-    //await for users
+        }).populate('likes');//to popualte likes for the posts
+     //await for users
     let users = await User.find({});
 
     return res.render('home', {

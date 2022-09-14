@@ -33,10 +33,10 @@ router.post('/create-session', passport.authenticate(
 router.get('/sign-out', usersController.destroySession);
 // assignmebt to create a post route
 
-router.get('/auth/google', passport.authenticate('google',{scope: ['profile', 'email']}));
-router.get('/auth/google/callback', passport.authenticate('google', {failureRedirect: '/users/sign-in'}, usersController.createSession));
 
 
+router.get('/auth/google',passport.authenticate('google',{scope:['profile','email']}));
+router.get('/auth/google/callback',passport.authenticate('google',{failureRedirect: '/users/sign-in'}), usersController.createSession);
 // router.get('/posts', post_controller.posts);
 
 module.exports = router;

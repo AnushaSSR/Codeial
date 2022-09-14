@@ -1,75 +1,134 @@
-{
-    //method to submit form data for new post using AJAX
-    let createComment= function(){
-        let newCommentForm=$('#new-comment-form');
+// {
+//     //method to submit form data for new post using AJAX
+//     let createComment= function(){
+//         let newCommentForm=$('#new-comment-form');
 
-        newPostForm.submit(function(e){
+//         newPostForm.submit(function(e){
+//             e.preventDefault();
+//             $.ajax({
+//                 type: 'post',
+//                 url: '/comments/create',
+//                 data: newCommentForm.serialize(),
+//                 success: function(data){
+//                     let newcomment= newCommentDom(data.data.comment);
+//                     $(`.post-comments-list>ul`).prepend(newcomment);
+//                     deletePost($('.delete-post-button', newcomment));
+//                 },error: function(error){
+//                     console.log(error.responseText);
+//                 }
+
+//             });
+//         });
+
+//     }
+
+  
+class PostComments{
+    // constructor is used to initialize the instance of the class whenever a new instance is created
+    constructor(postId){
+        this.postId = postId;
+        this.postContainer = $(`#post-${postId}`);
+        this.newCommentForm = $(`#post-${postId}-comments-form`);
+
+        this.createComment(postId);
+
+        let self = this;
+        // call for all the existing comments
+        $(' .delete-comment-button', this.postContainer).each(function(){
+            self.deleteComment($(this));
+        });
+    }
+
+
+    createComment(postId){
+        let pSelf = this;
+        this.newCommentForm.submit(function(e){
             e.preventDefault();
+            let self = this;
+
             $.ajax({
                 type: 'post',
                 url: '/comments/create',
-                data: newCommentForm.serialize(),
+                data: $(self).serialize(),
                 success: function(data){
-                    let newcomment= newCommentDom(data.data.comment);
-                    $(`.post-comments-list>ul`).prepend(newcomment);
-                    deletePost($('.delete-post-button', newcomment));
-                },error: function(error){
+                    console.log(data.data.comment);
+                    let newComment = pSelf.newCommentDom(data.data.comment);
+                    $(`#post-comments-${postId}`).prepend(newComment);
+                    pSelf.deleteComment($(' .delete-comment-button', newComment));
+
+                    // CHANGE :: enable the functionality of the toggle like button on the new comment
+                    new ToggleLike($(' .toggle-like-button', newComment));
+                    new Noty({
+                        theme: 'relax',
+                        text: "Comment published!",
+                        type: 'success',
+                        layout: 'topRight',
+                        timeout: 1500
+                        
+                    }).show();
+
+                }, error: function(error){
                     console.log(error.responseText);
                 }
-
             });
+
+
         });
-
     }
 
-    //method to create a post in DOM
-    let newPostDom=function(post){
-        return $(`<li id="Post-${post._id}">
-            <p>
-                    <small>
-                        <a class="delete-posts-button" href="/posts/destroy/${ post.id }"> X </a>
-                    </small>
-                        ${post.content}
-                            <br>
-        
+
+    newCommentDom(comment){
+        // CHANGE :: show the count of zero likes on this comment
+
+        return $(`<li id="comment-${ comment._id }">
+                        <p>
+                            
                             <small>
-                            ${post.user.name}
+                                <a class="delete-comment-button" href="/comments/destroy/${comment._id}">X</a>
                             </small>
-        
-            </p>
-            <div class="posts-comments">
-                    <form action="/comments/create" method="POST">
-                        <input type="text" name="content" placeholder="Type your comment here.." required>
-                        <input type="hidden" name="post" value="${post._id}">
-                        <input type="submit" value="Add Comment">
-                    </form>
-                
-                    <div class="post-comments-list">
-                        <ul id="post-comments- ${post._id}">
-                        </ul>
-                    </div>
-            </div>
-        </li>`)
+                            
+                            ${comment.content}
+                            <br>
+                            <small>
+                                ${comment.user.name}
+                            </small>
+                            <small>
+                            
+                                <a class="toggle-like-button" data-likes="0" href="/likes/toggle/?id=${comment._id}&type=Comment">
+                                    0 Likes
+                                </a>
+                            
+                            </small>
+
+                        </p>    
+
+                </li>`);
     }
 
 
-
-    // method to delete a post from dom
-
-    let deletePost = function(deleteLink){
+    deleteComment(deleteLink){
         $(deleteLink).click(function(e){
             e.preventDefault();
+
             $.ajax({
-                type:'get',
-                // get value of href in a tag
-                url: $(deleteLink.prop('href')),
+                type: 'get',
+                url: $(deleteLink).prop('href'),
                 success: function(data){
-                    $(`#post-$(data.data.post_id}`).remove();
+                    $(`#comment-${data.data.comment_id}`).remove();
+
+                    new Noty({
+                        theme: 'relax',
+                        text: "Comment Deleted",
+                        type: 'success',
+                        layout: 'topRight',
+                        timeout: 1500
+                        
+                    }).show();
                 },error: function(error){
                     console.log(error.responseText);
                 }
             });
+
         });
     }
-    createPost();
 }

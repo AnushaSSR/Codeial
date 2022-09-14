@@ -48,15 +48,11 @@ module.exports.update = async function(req, res){
 
                 if (req.file){
 
-                    if (user.avatar){
-                        fs.unlinkSync(path.join(__dirname, '..', user.avatar));
-                    }
+                    // if (user.avatar){
+                    //     fs.unlinkSync(path.join(__dirname, '..', user.avatar));
+                    // }
 
-                    //to fdelete or upadet if pic alreday exists
-                //     if(user.avatar){
-                //         fs.unlinkSync(path.join(__dirname, '..' , user.avatar ));
-
-                //     }
+                   
                 //   //  this is saving the path of the uploaded file into the vataer filed in the user
                     //user current user, avatrarPtha static var hich makes abvatr_path as public 
                     user.avatar = User.avatarPath + '/' + req.file.filename;
@@ -142,13 +138,18 @@ module.exports.create = function(req, res){
 
 
 // sign in and create a session for the user
-module.exports.createSession = function(req, res){
-    req.flash('success', 'Logged in Successfully');
-    console.log("page is loading");
+// module.exports.createSession = function(req, res){
+//     // req.flash('success', 'Logged in Successfully');
+//     console.log("page is loading");
+//     return res.redirect('/');
+
+//     // assuming user is alreday signed in
+
+// }
+
+module.exports.createSession = function(req,res){
+    console.log("hello");
     return res.redirect('/');
-
-    // assuming user is alreday signed in
-
 }
 
 module.exports.destroySession = function(req, res, next) {

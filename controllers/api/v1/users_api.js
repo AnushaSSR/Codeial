@@ -1,9 +1,11 @@
 const User= require('../../../models/user');
 const jwt = require('jsonwebtoken');
-
-module.exports.createSession =function(req,res){
+const env = require('../../../config/environment');
+module.exports.createSession =async function(req,res){
     try{
-        let user= User.findOne({email: req.body.email})
+        let user= await User.findOne({email: req.body.email})
+        console.log("user",user);
+        console.log("pass",req.body.password);
 
         if(!user || user.password != req.body.password){
             //422 invalidinput bythe user
@@ -12,12 +14,13 @@ module.exports.createSession =function(req,res){
             });
 
         }
-            return res.json(200 , {
-                message: 'Sign in successful, here is your token , keep it safe!',
-                data: {
-                    token: jwt.sign(user.toJSON(), 'codeial', {expiresIn: '100000'})
-                }
-            })
+        return res.json(200 , {
+            message: 'Sign in successful, here is your token , keep it safe!',
+            data: {
+                //change after env on the secret
+                token: jwt.sign(user.toJSON(), env.jwt_secret , {expiresIn: '100000'})
+            }
+        })
     }catch(err){
         console.log('****', err);
         return res.json(500, {

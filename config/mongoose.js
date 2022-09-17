@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const env = require('./environment');
 // provide connection to database
 //change: after env 
-mongoose.connect(`mongodb://localhost/${env.db}`);
-
+// mongoose.connect(`mongodb://localhost/${env.db}`);
+mongoose.connect('mongodb+srv://awsCluster:awsPwd3#@cluster0.dludvsq.mongodb.net/codeial_development');
 const db = mongoose.connection;
 
 //comment error noi nedd of correction

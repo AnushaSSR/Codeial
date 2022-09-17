@@ -10,6 +10,8 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const app = express();
 
+
+require('./config/view_helpers')(app);
 //to get the port, default is 80, we will go by 8000
 const port= 8000;
 // to get the library of express ejs layouts

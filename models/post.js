@@ -1,35 +1,30 @@
 const mongoose = require('mongoose');
 
 
-const postSchema = new mongoose.Schema({
-    content: {
-        type: String,
-        required: true
+const courseScores = new mongoose.Schema({
+    course_dsa: {
+        type: Number,
+        required: true,
+
     },
-    user: {
-        type:  mongoose.Schema.Types.ObjectId,
-        // indicate it is referring to id in the db of user schema
-        ref: 'User'
+    course_webd: {
+        type: Number,
+        required: true,
         
-        //timestamp it is refferimg to
     },
-    // include the array of ids of all comments in this post schema itself
-    comments: [
-        {
-        type:  mongoose.Schema.Types.ObjectId,
-        ref: 'Comment'
-        }
-    ],
-    likes: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref:'Like'
-        }
-    ]
+    course_dsa: {
+        type: Number,
+        required: true,
+        
+    },
+    course_react: {
+        type: Number,
+        required: true,   
+    }
 },{
     timestamps: true
 });
 
-const Post = mongoose.model('Post', postSchema);
+const CourseScores = mongoose.model('courseScores', ScoresSchema);
 
-module.exports = Post;
+module.exports = CourseScores;
